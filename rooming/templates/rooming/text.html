@@ -1,0 +1,68 @@
+{% load staticfiles %}
+{% csrf_token %}
+<html>
+  <head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    dt = new Date();
+        document.getElementById('loading').innerHTML = "Rooming Status as of "+dt.toLocaleTimeString()+":";
+});
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40509220-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </head>
+</html>
+<body style="font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;">
+<div style="width:1300px">
+<h1>Simmons Rooming Lottery 2013!</h1>
+<p><a href='/rooming'>Click here</a> to view a live-updating map of available rooms.
+<h3 id='loading'>Loading...</h3>
+<div style="display: inline-block; width:300px; vertical-align: top">
+<h2>Available Rooms</h2>
+{% for room in avail_rooms %}
+<b>{{room.number}} ({{room.type}}{% if room.grt != "None" %} in GRT {{room.grt}}{% endif %})</b><br/>
+  {% for resident in room.residents %}
+  <span>{{resident}}</span><br>
+  {% endfor %}
+<br>
+{% endfor %}
+</div>
+<div style="display: inline-block; width:300px;vertical-align: top">
+<h2>Chosen Rooms</h2> 
+{% for room in occupied_rooms %}
+  <b>{{room.number}} ({{room.type}})</b><br/>
+  {% for resident in room.resident_set.all %}
+  <span>{{resident.athena}}</span><br>
+  {% endfor %}
+<br>
+{% endfor %}
+</div>
+<div style="display: inline-block; width:500px; vertical-align: top">
+<h2>GRT Section Double Status</h2>
+The last <i>k</i> rooms in each section will be reserved for incoming freshmen. If the number of open doubles in a GRT section reaches the specified minimum, those doubles will be reserved for incoming freshmen and will no longer be available for residents to pick.
+{% for g in grt_sections %}
+{% if g.grt.section_name != "None" %}
+<h3>{{g.grt.section_name}}</h3>
+   <b>Total Number of Doubles in section:</b> {{g.total}}<br />
+   <b># Reserved For Freshmen:</b> {{g.freshmen}}<br />
+   <b># of doubles picked so far:</b> {{g.occupied}}<br />
+   <b># non-freshmen doubles remaining:</b> {{g.remain}}<br />
+<br>
+{% endif %}
+{% endfor %}
+</div>
+</div>
+</body>
+</head>
