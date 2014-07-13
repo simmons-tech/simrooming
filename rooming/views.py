@@ -1,4 +1,5 @@
 # Create your views here.
+import csv
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -9,11 +10,33 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     all_rooms = Room.objects.order_by('number')
     grt_sections = GRT.objects.order_by('section_name')
+
+    num_available_doubles = 0
+    for r in all_rooms:
+        if r.max_occupancy == 2 and r.empty():
+            num_available_doubles += 1
+
     context = {
         'all_rooms': all_rooms,
+        'num_available_doubles': num_available_doubles,
         'grt_sections': grt_sections
     }
     return render(request, 'rooming/index.html', context)
+
+def csvOutput(request):
+    response = HttpResponse(content_type='text/csv')
+
+    response['Content-Disposition'] = 'attachment; filename="rooming.csv"'
+
+    writer = csv.writer(response)
+
+    residents = Resident.objects.order_by('athena')
+
+    for resident in residents:
+        writer.writerow([resident.athena, resident.room.number])
+
+    return response
+
 
 
 def data(request):
@@ -61,10 +84,16 @@ def data(request):
 def entry(request):
     all_rooms = Room.objects.order_by('number')
     grt_sections = GRT.objects.order_by('section_name')
-    
+
+    num_available_doubles = 0
+    for r in all_rooms:
+        if r.max_occupancy == 2 and r.empty():
+            num_available_doubles += 1
+
     context = {
         'all_rooms': all_rooms,
-        'grt_sections': grt_sections
+        'grt_sections': grt_sections,
+        'num_available_doubles': num_available_doubles
     }
     return render(request, 'rooming/entry.html', context)
 
@@ -126,7 +155,12 @@ def text(request):
 
     avail_rooms = [v['room'] for (k,v) in response_data.iteritems() if v['room']['available']]
     avail_rooms.sort(key=lambda r: r['number'])
-        
+
+
+    num_available_doubles = 0
+    for r in all_rooms:
+        if r.max_occupancy == 2 and r.empty():
+            num_available_doubles += 1
 
     grt_output = [grt_sections[k] for k in grt_sections]
     grt_output.sort(key=lambda g: g['grt'].section_name)
@@ -135,6 +169,7 @@ def text(request):
         'avail_rooms': avail_rooms,
         'occupied_rooms': occupied_rooms,
         'grt_sections': grt_output,
+        'num_available_doubles': num_available_doubles,
         "msg": str(grt_sections)+'hi',
     }
     return render(request, 'rooming/text.html', context)

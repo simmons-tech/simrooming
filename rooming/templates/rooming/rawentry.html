@@ -30,9 +30,9 @@ $(document).ready(function(){
   <p><a href="/rooming/entry">Return</a> to the visual room entry page. Note that double constraints are not confirmed below:</p><br />
 <h3 id='loading'>Loading...</h3>
 {% for room in all_rooms %}
-    <a href="#"><span id='{{room.number}}' onclick='sendreq("{{room.number}}")'>Add</span></a> to room number {{room.number}} ({{room.type}}{% if room.grt_section.section_name != "None" %} in GRT {{room.grt_section.section_name}}{% endif %})</b><br>
+   Room {{room.number}} ({{room.type}}{% if room.grt_section.section_name != "None" %} in GRT {{room.grt_section.section_name}}{% endif %})</b> <a href="#"><span id='{{room.number}}' onclick='sendreq("{{room.number}}")'>Add</span></a> <br>
   {% for resident in room.resident_set.all %}
-&nbsp;&nbsp;&nbsp; <a href="#"><span onclick='removeresident("{{resident.athena}}")'>Remove</span></a> {{resident.athena}} from room {{room.number}}.<br/>
+&nbsp;&nbsp;&nbsp; <a href="#"><span onclick='removeresident("{{resident.athena}}")'>Remove</span></a> {{resident.athena}}<br/>
   {% endfor %}
 <br>
 {% endfor %}

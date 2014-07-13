@@ -13,4 +13,7 @@ urlpatterns = patterns('',
                        url(r'^update$', views.update, name='update'),
                        url(r'^text$', views.text, name='text'),
                        url(r'^removeresident$', views.removeresident, name='removeresident'),
+
+                       url(r'^csv$', views.csvOutput, name='csv'),
+                       
 )

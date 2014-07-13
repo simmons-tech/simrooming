@@ -26,7 +26,7 @@ $(document).ready(function(){
 </html>
 <body style="font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;">
 <div style="width:1300px">
-<h1>Simmons Rooming Lottery 2013!</h1>
+<h1>Simmons Rooming Lottery 2014!</h1>
 <p><a href='/rooming'>Click here</a> to view a live-updating map of available rooms.
 <h3 id='loading'>Loading...</h3>
 <div style="display: inline-block; width:300px; vertical-align: top">
@@ -52,6 +52,8 @@ $(document).ready(function(){
 <div style="display: inline-block; width:500px; vertical-align: top">
 <h2>GRT Section Double Status</h2>
 The last <i>k</i> rooms in each section will be reserved for incoming freshmen. If the number of open doubles in a GRT section reaches the specified minimum, those doubles will be reserved for incoming freshmen and will no longer be available for residents to pick.
+<p>Furthermore, the last 47 doubles across the whole dorm will be reserved for freshmen, regardless of which sections they are in.
+  <b>Number of doubles remaining: {{num_available_doubles}}</b></p>
 {% for g in grt_sections %}
 {% if g.grt.section_name != "None" %}
 <h3>{{g.grt.section_name}}</h3>

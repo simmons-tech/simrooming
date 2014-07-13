@@ -32,6 +32,9 @@ class Room(models.Model):
     def available(self):
         return not self.grt_section.filled() and not self.full()
 
+    def empty(self):
+        return self.num_occupants() == 0
+    
     def full(self):
         return self.num_occupants() == self.max_occupancy
 

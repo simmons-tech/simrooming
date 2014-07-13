@@ -50,14 +50,15 @@ function updateRooms() {
 	    if(rm == null) {
 		alert("NUll room"+roomnum);
 	    } else {
-		rm.style.fill="#DD1111";
+		rm.style.fill="#B20000";
 	    }
 	} else if (roomData[roomnum].room.status == 3) {
 	    rm = document.getElementById(roomnum)
 	    if(rm == null) {
 		alert("NUll room"+roomnum);
 	    } else {
-		rm.style.fill="#FF0099";
+		// Pink Alert!
+		rm.style.fill="#FF3399";
 	    }
 	}
     }
