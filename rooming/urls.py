@@ -4,7 +4,7 @@ from rooming import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
-                       url(r'^login/?$','django.contrib.auth.views.login',{'template_name': 'rooming/login.html'}, name='login'),
+#                       url(r'^login/?$','mit.scripts_login', {'template_name': 'rooming/login.html'}, name='login'),
                        url(r'^entry$', views.entry, name='entry'),
                        url(r'^rawentry$', views.rawentry, name='rawentry'),
                        url(r'^data$', views.data, name='data'),

@@ -2,11 +2,13 @@
 import csv
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.urlresolvers import reverse, reverse_lazy
 
 from rooming.models import GRT, Room, Resident
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def index(request):
     all_rooms = Room.objects.order_by('number')
     grt_sections = GRT.objects.order_by('section_name')
@@ -42,6 +44,7 @@ def index(request):
     }
     return render(request, 'rooming/index.html', context)
 
+@login_required(login_url='login')
 def csvOutput(request):
     response = HttpResponse(content_type='text/csv')
 
@@ -56,8 +59,7 @@ def csvOutput(request):
 
     return response
 
-
-
+@login_required(login_url='login')
 def data(request):
     all_rooms = Room.objects.order_by('number')
     all_residents = Resident.objects.order_by('athena')
@@ -101,6 +103,7 @@ def data(request):
 
 @login_required(login_url='login')
 def entry(request):
+    # admin login
     all_rooms = Room.objects.order_by('number')
     grt_sections = GRT.objects.order_by('section_name')
 
@@ -137,6 +140,7 @@ def entry(request):
 
 @login_required(login_url='login')
 def rawentry(request):
+    # admin login
     all_rooms = Room.objects.order_by('number')
     grt_sections = GRT.objects.order_by('section_name')
     
@@ -146,6 +150,7 @@ def rawentry(request):
     }
     return render(request, 'rooming/rawentry.html', context)
 
+@login_required(login_url='login')
 def text(request):
     all_rooms = Room.objects.order_by('number')
     grt_sections_orig = GRT.objects.order_by('section_name')
@@ -212,23 +217,28 @@ def text(request):
     }
     return render(request, 'rooming/text.html', context)
 
+@login_required(login_url='login')
 def return_failure(fail_msg):
     response_data = {}
     response_data['status'] = 1
     response_data['msg']    = fail_msg
     return HttpResponse(fail_msg)
+    # TODO: fix this
     return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
 
+@login_required(login_url='login')
 def return_success(msg, data={}):
     response_data = data
     response_data['status'] = 0
     response_data['msg']    = msg
     return HttpResponse(msg)
+    # TODO: fix this
     return HttpResponse(simple.dumps(response_data), mimetype="application/json")
     
 
 @login_required(login_url='login')
 def update(request):
+    # admin login
     roomnum = request.POST['roomnum']
     name = request.POST['name']
     if name == "":
@@ -273,6 +283,7 @@ def update(request):
 
 @login_required(login_url='login')
 def removeresident(request):
+    # admin login
     athena = request.POST["athena"]
     resident = Resident.objects.all().filter(athena=athena)[0]
     room_num = resident.room.number

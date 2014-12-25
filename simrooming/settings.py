@@ -4,7 +4,7 @@ import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -105,7 +105,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'mit.ScriptsRemoteUserMiddleware',
 )
+AUTHENTICATION_BACKENDS = ('mit.ScriptsRemoteUserBackend',)
 
 ROOT_URLCONF = 'simrooming.urls'
 
@@ -131,7 +133,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'rooming'
+    'rooming',
+    'mit'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -162,4 +165,3 @@ LOGGING = {
         },
     }
 }
-
