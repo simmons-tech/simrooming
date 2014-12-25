@@ -12,13 +12,32 @@ def index(request):
     grt_sections = GRT.objects.order_by('section_name')
 
     num_available_doubles = 0
+    num_half_full_doubles = 0
+    num_full_doubles = 0
+    num_available_singles = 0
+    num_full_singles = 0
     for r in all_rooms:
-        if r.max_occupancy == 2 and r.empty():
-            num_available_doubles += 1
+        if r.max_occupancy == 2:
+            num_occupants = r.num_occupants()
+            if num_occupants == 0:
+                num_available_doubles += 1
+            elif num_occupants == 1:
+                num_half_full_doubles += 1
+            else: # assume full
+                num_full_doubles += 1
+        else: # assume single
+            if r.num_occupants() == 0:
+                num_available_singles += 1
+            else:
+                num_full_singles += 1
 
     context = {
         'all_rooms': all_rooms,
         'num_available_doubles': num_available_doubles,
+        'num_half_full_doubles': num_half_full_doubles,
+        'num_full_doubles': num_full_doubles,
+        'num_available_singles': num_available_singles,
+        'num_full_singles': num_full_singles,
         'grt_sections': grt_sections
     }
     return render(request, 'rooming/index.html', context)
@@ -86,14 +105,33 @@ def entry(request):
     grt_sections = GRT.objects.order_by('section_name')
 
     num_available_doubles = 0
+    num_half_full_doubles = 0
+    num_full_doubles = 0
+    num_available_singles = 0
+    num_full_singles = 0
     for r in all_rooms:
-        if r.max_occupancy == 2 and r.empty():
-            num_available_doubles += 1
+        if r.max_occupancy == 2:
+            num_occupants = r.num_occupants()
+            if num_occupants == 0:
+                num_available_doubles += 1
+            elif num_occupants == 1:
+                num_half_full_doubles += 1
+            else: # assume full
+                num_full_doubles += 1
+        else: # assume single
+            if r.num_occupants() == 0:
+                num_available_singles += 1
+            else:
+                num_full_singles += 1
 
     context = {
         'all_rooms': all_rooms,
         'grt_sections': grt_sections,
-        'num_available_doubles': num_available_doubles
+        'num_available_doubles': num_available_doubles,
+        'num_half_full_doubles': num_half_full_doubles,
+        'num_full_doubles': num_full_doubles,
+        'num_available_singles': num_available_singles,
+        'num_full_singles': num_full_singles,
     }
     return render(request, 'rooming/entry.html', context)
 
