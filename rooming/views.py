@@ -1,6 +1,6 @@
 # Create your views here.
 import csv
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.core.urlresolvers import reverse, reverse_lazy
 
@@ -104,6 +104,9 @@ def data(request):
 @login_required(login_url='login')
 def entry(request):
     # admin login
+    if not request.user.is_staff:
+        raise Http404
+
     all_rooms = Room.objects.order_by('number')
     grt_sections = GRT.objects.order_by('section_name')
 
@@ -135,12 +138,16 @@ def entry(request):
         'num_full_doubles': num_full_doubles,
         'num_available_singles': num_available_singles,
         'num_full_singles': num_full_singles,
+        'request': request,
     }
     return render(request, 'rooming/entry.html', context)
 
 @login_required(login_url='login')
 def rawentry(request):
     # admin login
+    if not request.user.is_staff:
+        raise Http404
+
     all_rooms = Room.objects.order_by('number')
     grt_sections = GRT.objects.order_by('section_name')
     
@@ -239,6 +246,9 @@ def return_success(msg, data={}):
 @login_required(login_url='login')
 def update(request):
     # admin login
+    if not request.user.is_staff:
+        raise Http404
+
     roomnum = request.POST['roomnum']
     name = request.POST['name']
     if name == "":
@@ -284,6 +294,9 @@ def update(request):
 @login_required(login_url='login')
 def removeresident(request):
     # admin login
+    if not request.user.is_staff:
+        raise Http404
+
     athena = request.POST["athena"]
     resident = Resident.objects.all().filter(athena=athena)[0]
     room_num = resident.room.number

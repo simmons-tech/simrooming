@@ -107,7 +107,9 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'mit.ScriptsRemoteUserMiddleware',
 )
-AUTHENTICATION_BACKENDS = ('mit.ScriptsRemoteUserBackend',)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend','mit.ScriptsRemoteUserBackend',
+                           
+)
 
 ROOT_URLCONF = 'simrooming.urls'
 
@@ -128,10 +130,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'django.contrib.admin',
+    # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'rooming',
     'mit'
