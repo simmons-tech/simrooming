@@ -25,8 +25,8 @@
 #################################
 
 RANDOM_SEED = 83884746
-INPUT_FILENAME = "in.csv"
 YEARS_ORDER = ["Junior", "Sophomore", "Incoming Sophomore", "Freshman", "Incoming Freshman"]
+INPUT_FILENAME = "in.csv"
 OUTPUT_FILENAME = "out.csv"
 
 import csv, random
