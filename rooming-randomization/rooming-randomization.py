@@ -25,7 +25,7 @@
 #################################
 
 RANDOM_SEED = 83884746
-YEARS_ORDER = ["Junior", "Sophomore", "Incoming Sophomore", "Freshman", "Incoming Freshman"]
+YEARS_ORDER = ["Junior", "Incoming Junior", "Sophomore", "Incoming Sophomore", "Freshman", "Incoming Freshman"]
 INPUT_FILENAME = "in.csv"
 OUTPUT_FILENAME = "out.csv"
 
