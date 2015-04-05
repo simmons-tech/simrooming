@@ -1,4 +1,4 @@
-$.ajaxSetup({ 
+$.ajaxSetup({
      beforeSend: function(xhr, settings) {
          function getCookie(name) {
              var cookieValue = null;
@@ -19,21 +19,23 @@ $.ajaxSetup({
              // Only send the token to relative URLs i.e. locally.
              xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
          }
-     } 
+     }
 });
 
 
 var roomData = null;
 
-$(document).ready(function(){
-    
-    // The JSON (simplejson) Django repsonse looks like:
-    // {"lat": "23.5017777778", "alt": " 371405.03125", "lon": " 92.0223333333"}
+function syncRoomingData() {
     $.getJSON("data",
               function(data) {
                   roomData = data;
 		  updateRooms();
               });
+}
+
+$(document).ready(function(){
+    syncRoomingData();
+    setInterval(syncRoomingData, 5000);
 });
 
 function updateRooms() {
@@ -60,12 +62,11 @@ function updateRooms() {
 		// Pink Alert!
 		rm.style.fill="#FF3399";
 	    }
+	} else if (roomData[roomnum].room.status == 0) {
+	    rm = document.getElementById(roomnum)
+	    rm.style.fill="";
 	}
     }
     dt = new Date();
-    document.getElementById('loading').innerHTML = "Rooming Status as of "+dt.toLocaleTimeString()+":";
+    document.getElementById('loading').innerHTML = "Rooming Status as of "+dt.toLocaleTimeString()+" (auto-updates every 5 seconds):";
 }
-
-
-
-
