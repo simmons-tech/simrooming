@@ -224,7 +224,6 @@ def text(request):
     }
     return render(request, 'rooming/text.html', context)
 
-@login_required(login_url='login')
 def return_failure(fail_msg):
     response_data = {}
     response_data['status'] = 1
@@ -233,7 +232,6 @@ def return_failure(fail_msg):
     # TODO: fix this
     return HttpResponse(simplejson.dumps(response_data), mimetype="application/json")
 
-@login_required(login_url='login')
 def return_success(msg, data={}):
     response_data = data
     response_data['status'] = 0

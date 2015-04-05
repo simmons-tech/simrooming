@@ -36,7 +36,7 @@ function sendreq(room) {
 	} else {
 	    alert("ERROR:" + obj.msg);
 	}*/
-	location.reload();
+	syncRoomingData();
     });
 }
 function removeresident(athena) {
