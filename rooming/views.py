@@ -148,7 +148,9 @@ def rawentry(request):
     if not request.user.is_staff:
         raise Http404
 
-    all_rooms = Room.objects.order_by('number')
+    all_rooms = sorted(Room.objects.all(), key=lambda r:
+                   (int(filter(lambda c: c.isdigit(), r.number)),
+                    filter(lambda c: c.isalpha(), r.number)))
     grt_sections = GRT.objects.order_by('section_name')
     
     context = {
@@ -204,8 +206,6 @@ def text(request):
             response_data[r]['room']['available'] = False
 
     avail_rooms = [v['room'] for (k,v) in response_data.iteritems() if v['room']['available']]
-    avail_rooms.sort(key=lambda r: r['number'])
-
 
     num_available_doubles = 0
     for r in all_rooms:
@@ -214,6 +214,14 @@ def text(request):
 
     grt_output = [grt_sections[k] for k in grt_sections]
     grt_output.sort(key=lambda g: g['grt'].section_name)
+
+    occupied_rooms.sort(key=lambda r:
+                     (int(filter(lambda c: c.isdigit(), r.number)),
+                      filter(lambda c: c.isalpha(), r.number)))
+    avail_rooms.sort(key=lambda r:
+                     (int(filter(lambda c: c.isdigit(), r['number'])),
+                      filter(lambda c: c.isalpha(), r['number'])))
+
     context = {
         'empty_rooms': empty_rooms,
         'avail_rooms': avail_rooms,
