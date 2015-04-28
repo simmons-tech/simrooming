@@ -30,10 +30,17 @@ function syncRoomingData() {
               function(data) {
                   roomData = data;
 		  updateRooms();
+		  updateRoomInterface();
               });
 }
 
 $(document).ready(function(){
+    $("#roomInterface").hide();
+    $("#roomInterfaceAddField").keyup(function(e) {
+	if (e.keyCode === 13) {
+	    $("#roomInterfaceAddButton").click();
+	}
+    });
     syncRoomingData();
     setInterval(syncRoomingData, 5000);
 });
@@ -69,4 +76,16 @@ function updateRooms() {
     }
     dt = new Date();
     document.getElementById('loading').innerHTML = "Rooming Status as of "+dt.toLocaleTimeString()+" (auto-updates every 5 seconds):";
+}
+
+function updateRoomInterface() {
+    if ($("#roomInterface").is(":visible")) {
+	var roomNum = $("#roomInterfaceRoom").text();
+	var room = roomData[roomNum];
+	$("#roomInterfaceResidents").empty();
+	for (var i = 0; i < room.residents.length; i++) {
+            var kerb = room.residents[i];
+            $("#roomInterfaceResidents").append('<li>' + kerb + ' <button type="button" onclick="removeresident(\'' + kerb + '\')">Remove</button></li>');
+	}
+    }
 }

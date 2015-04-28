@@ -21,22 +21,36 @@ $.ajaxSetup({
          }
      } 
 });
-function sendreq(room) {
-    var name = prompt("Name of person to add:")
+function sendreq(room, data) {
+    $("#roomInterface").show();
+    $("#roomInterfaceRoom").text(room);
+    $("#roomInterfaceResult").text("");
+    $("#roomInterfaceAddField").val("");
+    $("#roomInterfaceAddField").select();
+    $("#roomInterfaceResidents").empty();
+    for (var i = 0; i < data.residents.length; i++) {
+        var kerb = data.residents[i];
+        $("#roomInterfaceResidents").append('<li>' + kerb + ' <button type="button" onclick="removeresident(\'' + kerb + '\')">Remove</button></li>');
+    }
+}
+function addResident() {
+    var roomNum = $("#roomInterfaceRoom").text();
+    var name = $("#roomInterfaceAddField").val();
+    $("#roomInterfaceAddField").val("");
     $.post("update", 
         {
-            roomnum: room,
+            roomnum: roomNum,
             name: name,
         },
     function(result) {
-	alert(result)
-/*        result_obj = JSON.parse(result);*/
+        $("#roomInterfaceResult").text(result);
+	syncRoomingData();
+	/*        result_obj = JSON.parse(result);*/
 /*	if (obj.status == 0) {
 	    alert("Success!" + obj.msg);
 	} else {
 	    alert("ERROR:" + obj.msg);
 	}*/
-	syncRoomingData();
     });
 }
 function removeresident(athena) {
@@ -45,7 +59,7 @@ function removeresident(athena) {
 	       athena: athena
 	   },
 	   function(result) {
-	       alert(result);
-	       location.reload();
+               $("#roomInterfaceResult").text(result);
+	       syncRoomingData();
 	   });
 }
