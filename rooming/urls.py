@@ -10,6 +10,7 @@ urlpatterns = patterns('',
                        url(r'^data$', views.data, name='data'),
                        url(r'^update$', views.update, name='update'),
                        url(r'^text$', views.text, name='text'),
+                       url(r'^rooms$', views.rooms, name='rooms'),
                        url(r'^removeresident$', views.removeresident, name='removeresident'),
 
                        url(r'^csv$', views.csvOutput, name='csv'),

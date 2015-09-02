@@ -232,6 +232,17 @@ def text(request):
     }
     return render(request, 'rooming/text.html', context)
 
+@login_required(login_url='login')
+def rooms(request):
+    all_rooms = [r for r in Room.objects.all()]
+    all_rooms.sort(key=lambda r:
+                       (int(filter(lambda c: c.isdigit(), r.number)),
+                        filter(lambda c: c.isalpha(), r.number)))
+    context = {
+        'rooms': all_rooms,
+    }
+    return render(request, 'rooming/rooms.html', context)
+
 def return_failure(fail_msg):
     response_data = {}
     response_data['status'] = 1

@@ -1,0 +1,9 @@
+{% load staticfiles %}
+{% csrf_token %}
+<html>
+  <body>
+    {% for room in rooms %}
+    {{room.number}},{{room.type}}<br/>
+    {% endfor %}
+  </body>
+</html>
